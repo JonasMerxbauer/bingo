@@ -1,12 +1,12 @@
 import { type Config } from "drizzle-kit";
 
-import { env } from "~/env";
+import { env } from "~/env.js";
 
 export default {
   schema: "./src/server/db/schema.ts",
-  driver: "mysql2",
+  driver: "pg",
   dbCredentials: {
-    uri: env.DATABASE_URL,
+    connectionString: env.DATABASE_URL,
   },
   tablesFilter: ["bingo_*"],
 } satisfies Config;

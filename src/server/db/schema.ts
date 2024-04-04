@@ -1,14 +1,14 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
-  bigint,
-  index,
-  mysqlTableCreator,
+  integer,
+  pgTableCreator,
+  serial,
   timestamp,
   varchar,
-} from "drizzle-orm/mysql-core";
+} from "drizzle-orm/pg-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -16,19 +16,33 @@ import {
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = mysqlTableCreator((name) => `bingo_${name}`);
+export const createTable = pgTableCreator((name) => `bingo_${name}`);
 
-export const posts = createTable(
-  "post",
-  {
-    id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt").onUpdateNow(),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
-);
+export const bingos = createTable("bingo", {
+  id: serial("id").primaryKey(),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt"),
+});
+
+export const bingoRelations = relations(bingos, ({ many }) => ({
+  values: many(values),
+}));
+
+export const values = createTable("value", {
+  id: serial("id").primaryKey(),
+  text: varchar("text", { length: 256 }),
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt"),
+  bingoId: integer("bingo_id"),
+});
+
+export const valuesRelations = relations(values, ({ one }) => ({
+  bingo: one(bingos, {
+    fields: [values.bingoId],
+    references: [bingos.id],
+  }),
+}));
