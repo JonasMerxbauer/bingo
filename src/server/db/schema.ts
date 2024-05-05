@@ -20,29 +20,9 @@ export const createTable = pgTableCreator((name) => `bingo_${name}`);
 
 export const bingos = createTable("bingo", {
   id: serial("id").primaryKey(),
+  value: varchar("value"),
   createdAt: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   updatedAt: timestamp("updatedAt"),
 });
-
-export const bingoRelations = relations(bingos, ({ many }) => ({
-  values: many(values),
-}));
-
-export const values = createTable("value", {
-  id: serial("id").primaryKey(),
-  text: varchar("text", { length: 256 }),
-  createdAt: timestamp("created_at")
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp("updatedAt"),
-  bingoId: integer("bingo_id"),
-});
-
-export const valuesRelations = relations(values, ({ one }) => ({
-  bingo: one(bingos, {
-    fields: [values.bingoId],
-    references: [bingos.id],
-  }),
-}));
