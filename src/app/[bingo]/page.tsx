@@ -1,13 +1,12 @@
-import { db } from "~/server/db";
+import { getBingo } from "~/server/db/query/getBingo";
+
+export const revalidate = 3600 * 24;
 
 export default async function BingoPage({
   params,
 }: {
   params: { bingo: string };
 }) {
-  const data = await db.query.bingos.findFirst({
-    where: (bingos, { eq }) => eq(bingos.link, params.bingo),
-  });
-
+  const data = await getBingo(params.bingo);
   return <div>{data?.value}</div>;
 }
