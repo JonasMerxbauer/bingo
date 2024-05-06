@@ -1,6 +1,6 @@
 "use client";
 
-import { set, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -16,9 +16,11 @@ import {
 } from "~/components/ui/form";
 import { Textarea } from "~/components/ui/textarea";
 import { isPowerOfTwo } from "~/lib/utils";
-import { useState } from "react";
 import { useAtom } from "jotai";
 import { bingoInputAtom } from "~/store";
+import { createBingo } from "~/server/actions/createBingo";
+import { useFormStatus } from "react-dom";
+import { SubmitButton } from "./SubmitButton";
 
 export const formSchema = z.object({
   bingo: z
@@ -60,15 +62,9 @@ const BingoForm = () => {
     setBingoInput(input.split("\n").filter((x) => x));
   }
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form action={createBingo} className="flex-[0.5]">
         <FormField
           control={form.control}
           name="bingo"
@@ -86,7 +82,7 @@ const BingoForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <SubmitButton>Submit</SubmitButton>
       </form>
     </Form>
   );
