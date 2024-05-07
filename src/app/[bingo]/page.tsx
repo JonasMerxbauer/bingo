@@ -1,3 +1,4 @@
+import BingoGrid from "~/components/BingoGrid";
 import { getBingo } from "~/server/db/query/getBingo";
 
 export const revalidate = 3600 * 24;
@@ -8,5 +9,16 @@ export default async function BingoPage({
   params: { bingo: string };
 }) {
   const data = await getBingo(params.bingo);
-  return <div>{data?.value}</div>;
+
+  if (!data) {
+    return <div>Bingo not found</div>;
+  }
+
+  const bingo = data.value.split("\\r\\n");
+
+  if (!Array.isArray(bingo)) {
+    return <div>Invalid bingo</div>;
+  }
+
+  return <BingoGrid disabled={false} bingo={bingo} />;
 }

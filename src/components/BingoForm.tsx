@@ -4,7 +4,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,10 +15,7 @@ import {
 } from "~/components/ui/form";
 import { Textarea } from "~/components/ui/textarea";
 import { isPowerOfTwo } from "~/lib/utils";
-import { useAtom } from "jotai";
-import { bingoInputAtom } from "~/store";
 import { createBingo } from "~/server/actions/createBingo";
-import { useFormStatus } from "react-dom";
 import { SubmitButton } from "./SubmitButton";
 
 export const formSchema = z.object({
@@ -48,14 +44,17 @@ export const formSchema = z.object({
     ),
 });
 
-const BingoForm = () => {
+const BingoForm = ({
+  setBingoInput,
+}: {
+  setBingoInput: (value: string[]) => void;
+}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       bingo: "",
     },
   });
-  const [, setBingoInput] = useAtom(bingoInputAtom);
 
   function onChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const input = e.target.value;

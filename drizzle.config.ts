@@ -4,9 +4,10 @@ import { env } from "~/env.js";
 
 export default {
   schema: "./src/server/db/schema.ts",
-  driver: "pg",
+  driver: "turso",
   dbCredentials: {
-    connectionString: env.DATABASE_URL,
+    url: env.DATABASE_URL,
+    authToken: env.DATABASE_AUTH_TOKEN,
   },
   tablesFilter: ["bingo_*"],
 } satisfies Config;

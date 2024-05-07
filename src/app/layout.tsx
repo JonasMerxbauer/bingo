@@ -20,7 +20,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>{children}</body>
+      <body className={`font-sans ${inter.variable} dark`}>
+        <div className="flex h-screen flex-col items-center justify-center p-16">
+          <h1 className="mb-8 text-2xl font-bold">BINGO</h1>
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

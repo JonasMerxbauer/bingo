@@ -1,28 +1,41 @@
 "use client";
-import { useAtom } from "jotai";
-import { useMemo, useState } from "react";
-import { bingoInputAtom } from "~/store";
+import { useEffect, useMemo, useState } from "react";
 
-const BingoGrid = () => {
-  const [bingoInput] = useAtom(bingoInputAtom);
+const BingoGrid = ({
+  disabled = true,
+  bingo,
+}: {
+  disabled?: boolean;
+  bingo: string[];
+}) => {
+  const [bingoInput, setBingoInput] = useState(bingo);
   const gridSize = useMemo(
     () =>
-      Math.ceil(Math.sqrt(bingoInput.length)) < 3
-        ? 3
+      Math.ceil(Math.sqrt(bingoInput.length)) < 2
+        ? 2
         : Math.ceil(Math.sqrt(bingoInput.length)),
     [bingoInput.length],
   );
 
+  const gridCols = ["grid-cols-2", "grid-cols-3", "grid-cols-4", "grid-cols-5"];
+  const gridRows = ["grid-rows-2", "grid-rows-3", "grid-rows-4", "grid-rows-5"];
+
+  useEffect(() => {
+    setBingoInput(bingo);
+  }, [bingo]);
+
   return (
-    <div className="flex flex-col gap-2">
-      {Array(gridSize)
+    <div
+      className={`grid ${gridCols[gridSize - 2]} ${gridRows[gridSize - 2]} gap-2`}
+    >
+      {Array(gridSize * gridSize)
         .fill(null)
         .map((_, i) => (
-          <Row
+          <Box
             key={i}
-            rowNumber={i}
-            gridSize={gridSize}
-            bingoInput={bingoInput}
+            text={bingoInput[i]}
+            disabled={disabled}
+            isChecked={false}
           />
         ))}
     </div>
@@ -30,35 +43,21 @@ const BingoGrid = () => {
 };
 export default BingoGrid;
 
-const Row = (props: {
-  rowNumber: number;
-  gridSize: number;
-  bingoInput: string[];
+const Box = (props: {
+  text: string | undefined;
+  disabled: boolean;
+  isChecked: boolean;
 }) => {
-  return (
-    <div className="flex gap-2">
-      {Array(props.gridSize)
-        .fill(null)
-        .map((_, i) => (
-          <Box
-            key={i}
-            text={props.bingoInput[props.rowNumber * props.gridSize + i]}
-            isChecked={false}
-          />
-        ))}
-    </div>
-  );
-};
-
-const Box = (props: { text: string | undefined; isChecked: boolean }) => {
   const [isChecked, setIsChecked] = useState(props.isChecked);
   const checkedStyle = isChecked ? "bg-green-400" : "bg-red-400";
 
+  const toggle = () => setIsChecked((prev) => !prev);
+
   return (
     <div
-      onClick={() => setIsChecked((prev) => !prev)}
+      onClick={!props.disabled ? toggle : undefined}
       className={
-        "flex h-32 w-32 cursor-pointer items-center justify-center border-2 border-black " +
+        "flex aspect-square max-h-full cursor-pointer items-center justify-center border-2 border-black " +
         checkedStyle
       }
     >

@@ -3,12 +3,11 @@
 
 import { sql } from "drizzle-orm";
 import {
-  pgTableCreator,
-  serial,
+  int,
+  sqliteTableCreator,
   text,
-  timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -16,14 +15,22 @@ import {
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `bingo_${name}`);
+export const createTable = sqliteTableCreator((name) => `bingo_${name}`);
 
-export const bingos = createTable("bingo", {
-  id: serial("id").primaryKey(),
-  value: text("value").notNull(),
-  link: varchar("link", { length: 5 }).notNull(),
-  createdAt: timestamp("created_at")
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp("updatedAt"),
-});
+export const bingos = createTable(
+  "bingo",
+  {
+    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
+    value: text("value").notNull(),
+    link: text("link", { length: 5 }).notNull(),
+    createdAt: int("created_at", { mode: "timestamp" })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: int("created_at", { mode: "timestamp" }),
+  },
+  (table) => {
+    return {
+      linkIdx: uniqueIndex("link_idx").on(table.link),
+    };
+  },
+);
