@@ -1,8 +1,6 @@
 import BingoGrid from "~/components/BingoGrid";
 import { getBingo } from "~/server/db/query/getBingo";
 
-export const revalidate = 3600 * 24;
-
 export default async function BingoPage({
   params,
 }: {
