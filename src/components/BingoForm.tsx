@@ -10,11 +10,10 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "~/components/ui/form";
 import { Textarea } from "~/components/ui/textarea";
-import { isPowerOfTwo } from "~/lib/utils";
+import { isSquare } from "~/lib/utils";
 import { createBingo } from "~/server/actions/createBingo";
 import { SubmitButton } from "./SubmitButton";
 
@@ -31,15 +30,30 @@ export const formSchema = z.object({
     )
     .refine(
       (value) => {
-        const array = value.split("\n");
+        const array = value.split("\n").filter((item) => item);
 
-        const isValid = isPowerOfTwo(array.length);
+        const isValid = isSquare(array.length);
 
         return isValid;
       },
       {
         message:
           "The number of items must be a power of two. This is to ensure that the bingo is solvable",
+      },
+    )
+    .refine(
+      (value) => {
+        const array = value.split("\n").filter((item) => item);
+
+        console.log(array);
+
+        const isValid = array.length >= 4 && array.length <= 25;
+        console.log(isValid);
+
+        return isValid;
+      },
+      {
+        message: "The number of items must be between 4 and 25",
       },
     ),
 });
@@ -63,25 +77,31 @@ const BingoForm = ({
 
   return (
     <Form {...form}>
-      <form action={createBingo} className="flex-[0.5]">
+      <form action={createBingo} className="flex flex-[0.5] flex-col gap-4">
         <FormField
           control={form.control}
           name="bingo"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bingo</FormLabel>
-              <FormControl>
-                <Textarea onChangeCapture={onChange} {...field} />
-              </FormControl>
               <FormDescription>
-                Use enter to differentiate between items. Max 25 items per
-                bingo.
+                Use enter to differentiate between items
+                <br />
+                Max 25 items per bingo
               </FormDescription>
+              <FormControl>
+                <Textarea
+                  className="h-[34rem] resize-none"
+                  onChangeCapture={onChange}
+                  {...field}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <SubmitButton>Submit</SubmitButton>
+        <SubmitButton className="w-full" isValid={form.formState.isValid}>
+          Submit
+        </SubmitButton>
       </form>
     </Form>
   );

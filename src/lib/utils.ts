@@ -5,8 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function isPowerOfTwo(n: number) {
-  return n && !(n & (n - 1));
+export function isSquare(n: number) {
+  return n > 0 && Math.sqrt(n) % 1 === 0;
 }
 
 export function getRandomString(length: number) {
