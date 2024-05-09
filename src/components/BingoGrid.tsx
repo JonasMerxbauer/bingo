@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 const BingoGrid = ({
   disabled = true,
@@ -8,35 +8,26 @@ const BingoGrid = ({
   disabled?: boolean;
   bingo: string[];
 }) => {
-  const [bingoInput, setBingoInput] = useState(bingo);
   const gridSize = useMemo(
     () =>
-      Math.ceil(Math.sqrt(bingoInput.length)) < 2
+      Math.ceil(Math.sqrt(bingo.length)) < 2
         ? 2
-        : Math.ceil(Math.sqrt(bingoInput.length)),
-    [bingoInput.length],
+        : Math.ceil(Math.sqrt(bingo.length)) > 5
+          ? 5
+          : Math.ceil(Math.sqrt(bingo.length)),
+    [bingo.length],
   );
 
   const gridCols = ["grid-cols-2", "grid-cols-3", "grid-cols-4", "grid-cols-5"];
   const gridRows = ["grid-rows-2", "grid-rows-3", "grid-rows-4", "grid-rows-5"];
-
-  useEffect(() => {
-    setBingoInput(bingo);
-  }, [bingo]);
-
   return (
     <div
-      className={`grid ${gridCols[gridSize - 2]} ${gridRows[gridSize - 2]} gap-2`}
+      className={`grid ${gridCols[gridSize - 2]} ${gridRows[gridSize - 2]} gap-1`}
     >
       {Array(gridSize * gridSize)
         .fill(null)
         .map((_, i) => (
-          <Box
-            key={i}
-            text={bingoInput[i]}
-            disabled={disabled}
-            isChecked={false}
-          />
+          <Box key={i} text={bingo[i]} disabled={disabled} isChecked={false} />
         ))}
     </div>
   );
