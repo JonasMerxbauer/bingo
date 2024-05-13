@@ -8,7 +8,7 @@ export default function HomePage() {
   const [bingoInput, setBingoInput] = useState([""]);
 
   return (
-    <main className="flex w-full flex-1 gap-16">
+    <main className="flex w-full flex-col-reverse items-center justify-center gap-16 lg:flex-row lg:items-start">
       <BingoForm setBingoInput={setBingoInput} />
       <BingoGrid bingo={bingoInput} />
     </main>

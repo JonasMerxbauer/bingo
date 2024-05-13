@@ -21,8 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable} dark`}>
-        <div className="flex h-screen flex-col items-center justify-center p-16">
-          <h1 className="mb-8 text-2xl font-bold">BINGO</h1>
+        <div className="flex h-screen flex-col items-center p-2 py-8 sm:py-16">
+          <h1 className="mb-4 text-center text-2xl font-bold sm:mb-8 sm:text-7xl">
+            SIMPLE BINGO
+          </h1>
           {children}
         </div>
       </body>

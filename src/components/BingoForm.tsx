@@ -77,7 +77,7 @@ const BingoForm = ({
 
   return (
     <Form {...form}>
-      <form action={createBingo} className="flex flex-[0.5] flex-col gap-4">
+      <form action={createBingo} className="flex w-72 flex-col gap-4">
         <FormField
           control={form.control}
           name="bingo"
