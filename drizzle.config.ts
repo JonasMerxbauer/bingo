@@ -10,4 +10,5 @@ export default {
     authToken: env.DATABASE_AUTH_TOKEN,
   },
   tablesFilter: ["bingo_*"],
+  dialect: "sqlite",
 } satisfies Config;
