@@ -24,7 +24,7 @@ const BingoGrid = ({
   return (
     <div
       className={
-        "grid h-[16rem] w-[16rem] gap-2 sm:h-[30rem] sm:w-[30rem] lg:h-[44rem] lg:w-[44rem]" +
+        "grid h-[18rem] w-[18rem] gap-2 sm:h-[30rem] sm:w-[30rem] lg:h-[44rem] lg:w-[44rem]" +
         ` ${gridCols[gridSize - 2]} ${gridRows[gridSize - 2]}`
       }
     >

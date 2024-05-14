@@ -8,8 +8,8 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Simple bingo",
-  description: "Simple bingo",
+  title: "bingo",
+  description: "bingo",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={`font-sans ${inter.variable} dark`}>
         <div className="flex h-screen flex-col items-center p-2 py-8 sm:py-16">
           <h1 className="mb-4 text-center text-2xl font-bold sm:mb-8 sm:text-7xl">
-            SIMPLE BINGO
+            bingo
           </h1>
           {children}
         </div>
