@@ -1,3 +1,4 @@
+import "server-only";
 import { unstable_cache } from "next/cache";
 import { db } from "~/server/db";
 
@@ -9,4 +10,7 @@ export const getBingo = unstable_cache(
     return bingo;
   },
   ["get_bingo"],
+  {
+    tags: ["get_bingo"],
+  },
 );
