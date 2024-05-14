@@ -31,6 +31,10 @@ const config = {
         checksVoidReturn: { attributes: false },
       },
     ],
+    "@typescript-eslint/no-empty-interface": [
+      "error",
+      { allowSingleExtends: true },
+    ],
   },
 };
 
