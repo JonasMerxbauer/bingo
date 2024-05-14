@@ -24,27 +24,28 @@ const BingoGrid = ({
   return (
     <div
       className={
-        "grid h-[16rem] w-[16rem] gap-1 sm:h-[30rem] sm:w-[30rem] lg:h-[44rem] lg:w-[44rem] 2xl:h-[56rem] 2xl:w-[56rem]" +
+        "grid h-[16rem] w-[16rem] gap-2 sm:h-[30rem] sm:w-[30rem] lg:h-[44rem] lg:w-[44rem]" +
         ` ${gridCols[gridSize - 2]} ${gridRows[gridSize - 2]}`
       }
     >
       {Array(gridSize * gridSize)
         .fill(null)
         .map((_, i) => (
-          <Box key={i} text={bingo[i]} disabled={disabled} isChecked={false} />
+          <Box key={i} text={bingo[i]} disabled={disabled} />
         ))}
     </div>
   );
 };
 export default BingoGrid;
 
-const Box = (props: {
-  text: string | undefined;
-  disabled: boolean;
-  isChecked: boolean;
-}) => {
-  const [isChecked, setIsChecked] = useState(props.isChecked);
-  const checkedStyle = isChecked ? "bg-green-400" : "bg-red-400";
+const Box = (props: { text: string | undefined; disabled: boolean }) => {
+  const [isChecked, setIsChecked] = useState(false);
+  const checkedStyle = isChecked
+    ? " bg-green-600 cursor-pointer"
+    : " bg-red-600 cursor-pointer";
+  const disabledStyle = props.disabled ? " bg-background border-4" : "";
+
+  const style = props.disabled ? disabledStyle : checkedStyle;
 
   const toggle = () => setIsChecked((prev) => !prev);
 
@@ -52,11 +53,13 @@ const Box = (props: {
     <div
       onClick={!props.disabled ? toggle : undefined}
       className={
-        "flex aspect-square max-h-full cursor-pointer items-center justify-center border-2 border-black text-center text-xl font-bold sm:text-2xl lg:text-4xl " +
-        checkedStyle
+        "box-border flex aspect-square max-h-full items-center justify-center rounded-xl p-4" +
+        style
       }
     >
-      {props.text}
+      <p className="line-clamp-5 text-ellipsis break-words break-all text-center text-xl font-bold sm:text-2xl lg:text-4xl lg:leading-tight">
+        {props.text}
+      </p>
     </div>
   );
 };

@@ -44,11 +44,7 @@ export const formSchema = z.object({
     .refine(
       (value) => {
         const array = value.split("\n").filter((item) => item);
-
-        console.log(array);
-
         const isValid = array.length >= 4 && array.length <= 25;
-        console.log(isValid);
 
         return isValid;
       },
