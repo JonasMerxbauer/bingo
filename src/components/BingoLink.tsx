@@ -1,21 +1,20 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const BingoLink = () => {
   const [isCopied, setIsCopied] = useState(false);
-  const pathname = usePathname();
+  const url = useUrl();
 
   const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(pathname);
+    await navigator.clipboard.writeText(url);
     setIsCopied(true);
   };
 
   return (
     <button onClick={copyToClipboard} className="flex">
       <div className="flex h-12 items-center rounded-l-md border border-r-0 px-4 py-3 font-mono text-sm">
-        {pathname}
+        {url}
       </div>
 
       <div className="flex h-12 items-center rounded-r-md border border-l-0 py-3 pl-2 pr-4 font-mono text-sm">
@@ -53,6 +52,16 @@ const BingoLink = () => {
       </div>
     </button>
   );
+};
+
+const useUrl = () => {
+  const [url, setUrl] = useState("");
+
+  useEffect(() => {
+    setUrl(window.location.href);
+  }, []);
+
+  return url;
 };
 
 export default BingoLink;
