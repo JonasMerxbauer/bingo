@@ -1,5 +1,6 @@
 import { z } from "zod";
 import BingoGrid from "~/components/BingoGrid";
+import BingoLink from "~/components/BingoLink";
 import { getBingo } from "~/server/db/query/getBingo";
 
 export default async function BingoPage({
@@ -20,5 +21,10 @@ export default async function BingoPage({
     return <div>Invalid bingo</div>;
   }
 
-  return <BingoGrid disabled={false} bingo={bingo} />;
+  return (
+    <div className="flex flex-col items-center gap-8">
+      <BingoGrid disabled={false} bingo={bingo} />
+      <BingoLink />
+    </div>
+  );
 }
