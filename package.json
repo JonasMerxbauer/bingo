@@ -9,6 +9,7 @@
     "db:studio": "drizzle-kit studio",
     "dev": "next dev",
     "lint": "next lint",
+    "format": "prettier --write . --list-different",
     "start": "next start"
   },
   "dependencies": {
