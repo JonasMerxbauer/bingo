@@ -6,16 +6,16 @@ import { toast } from "sonner";
 
 export default function CopiedToast() {
   useEffect(() => {
-    addEventListener("copy", () => {
-      toast("Copied to clipboard");
-    });
+    addEventListener("copy", copyToastEvent);
 
     return () => {
-      removeEventListener("copy", () => {
-        toast("Copied to clipboard");
-      });
+      removeEventListener("copy", copyToastEvent);
     };
   }, []);
 
   return <Toaster />;
 }
+
+const copyToastEvent = () => {
+  toast("Copied!");
+};
